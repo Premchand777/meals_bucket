@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meals_bucket/widgets/screens/meals_categories_slw.dart';
+
+import 'package:meals_bucket/widgets/screens/main_tab_bar_screen.dart';
 
 ThemeData theme = ThemeData(
   useMaterial3: true,
@@ -23,9 +24,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      home: const MealsCategoriesScreen(),
+    return SafeArea(
+      child: MaterialApp(
+        theme: theme,
+        home: const MainTabBarScreen(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
