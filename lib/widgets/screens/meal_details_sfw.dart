@@ -1,23 +1,79 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:meals_bucket/models/meal_model.dart';
 
-class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({
+class MealDetailsScreen extends StatefulWidget {
+  MealDetailsScreen({
     super.key,
     required this.mealDetails,
+    required this.favoriteMeals,
+    required this.addRemoveFavorites,
   });
 
-  final MealModel mealDetails;
+  MealModel mealDetails;
+  List<MealModel> favoriteMeals;
+  void Function(MealModel mealDetails) addRemoveFavorites;
 
   @override
+  State<MealDetailsScreen> createState() => _MealDetailsScreenState();
+}
+
+class _MealDetailsScreenState extends State<MealDetailsScreen> {
+  int iconIndex = 0;
+  Icon icon = const Icon(
+    Icons.star_border_rounded,
+  );
+  @override
   Widget build(BuildContext context) {
+    if (widget.favoriteMeals.contains(widget.mealDetails)) {
+      iconIndex = 1;
+      icon = const Icon(
+        Icons.star_rate_rounded,
+      );
+    }
+    void toggleFavoriteIcon() {
+      if (iconIndex == 0) {
+        // setState(() {
+        iconIndex = 1;
+        icon = const Icon(
+          Icons.star_rate_rounded,
+        );
+        // });
+        return;
+      }
+      if (iconIndex == 1) {
+        // setState(() {
+        iconIndex = 0;
+        icon = const Icon(
+          Icons.star_border_rounded,
+        );
+        // });
+      }
+    }
+
+    void onTappingFavoriteIcon() {
+      widget.addRemoveFavorites(widget.mealDetails);
+      setState(() {
+        toggleFavoriteIcon();
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          mealDetails.title,
+          widget.mealDetails.title,
         ),
+        actions: [
+          IconButton(
+            icon: icon,
+            onPressed: onTappingFavoriteIcon,
+            style: const ButtonStyle(
+              iconSize: MaterialStatePropertyAll(30),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -29,7 +85,7 @@ class MealDetailsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                      mealDetails.imageUrl,
+                      widget.mealDetails.imageUrl,
                     ),
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
@@ -51,7 +107,7 @@ class MealDetailsScreen extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              for (final ingredient in mealDetails.ingredients)
+              for (final ingredient in widget.mealDetails.ingredients)
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 8,
@@ -77,7 +133,7 @@ class MealDetailsScreen extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              for (final step in mealDetails.steps)
+              for (final step in widget.mealDetails.steps)
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 12,
