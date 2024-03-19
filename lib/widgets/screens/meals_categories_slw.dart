@@ -3,20 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:meals_bucket/data/meals_categories.dart';
+import 'package:meals_bucket/models/meal_model.dart';
 import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
 import 'package:meals_bucket/widgets/widgets/meals_category_item_slw.dart';
 
 class MealsCategoriesScreen extends StatelessWidget {
   const MealsCategoriesScreen({
     super.key,
+    required this.favoriteMeals,
+    required this.addRemoveFavorites,
   });
+
+  final List<MealModel> favoriteMeals;
+  final void Function(MealModel mealDetails) addRemoveFavorites;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meals Category'),
-      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
         child: GridView(
@@ -33,13 +36,15 @@ class MealsCategoriesScreen extends StatelessWidget {
                 onSelect: () {
                   Timer(
                     const Duration(
-                      milliseconds: 80,
+                      milliseconds: 200,
                     ),
                     () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (ctx) => CategoryMealsScreen(
-                            mealsCategory: mealCategory.id,
+                            mealsCategoryId: mealCategory.id,
+                            favoriteMeals: favoriteMeals,
+                            addRemoveFavorites: addRemoveFavorites,
                           ),
                         ),
                       );
