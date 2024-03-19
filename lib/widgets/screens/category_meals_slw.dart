@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable
 import 'dart:async';
 import 'package:flutter/material.dart';
 
@@ -6,24 +6,32 @@ import 'package:meals_bucket/data/meals.dart';
 import 'package:meals_bucket/data/meals_categories.dart';
 // import 'package:meals_bucket/data/meals_categories.dart';
 import 'package:meals_bucket/models/meal_model.dart';
-import 'package:meals_bucket/widgets/screens/meal_details_slw.dart';
+import 'package:meals_bucket/widgets/screens/meal_details_sfw.dart';
 // import 'package:meals_bucket/models/meals_category_model.dart';
 
 class CategoryMealsScreen extends StatelessWidget {
   CategoryMealsScreen({
     super.key,
-    required this.mealsCategory,
+    this.mealsCategoryId,
+    required this.favoriteMeals,
+    required this.addRemoveFavorites,
   });
 
   // final MealsCategoryModel mealsCategory;
-  final String mealsCategory;
+  final String? mealsCategoryId;
   final List<MealModel> categoryMeals = [];
+  List<MealModel> favoriteMeals;
+  void Function(MealModel mealDetails) addRemoveFavorites;
 
   void getCategoryMeals() {
-    for (final meal in meals) {
-      if (meal.categories.contains(mealsCategory)) {
-        categoryMeals.add(meal);
+    if (mealsCategoryId != null) {
+      for (final meal in meals) {
+        if (meal.categories.contains(mealsCategoryId)) {
+          categoryMeals.add(meal);
+        }
       }
+    } else {
+      categoryMeals.addAll(favoriteMeals);
     }
   }
 
@@ -61,13 +69,15 @@ class CategoryMealsScreen extends StatelessWidget {
                         // time interval of 2 seconds
                         Timer(
                           const Duration(
-                            milliseconds: 80,
+                            milliseconds: 200,
                           ),
                           () {
                             Navigator.of(ctx).push(
                               MaterialPageRoute(
                                 builder: (ctx) => MealDetailsScreen(
                                   mealDetails: categoryMeals[index],
+                                  favoriteMeals: favoriteMeals,
+                                  addRemoveFavorites: addRemoveFavorites,
                                 ),
                               ),
                             );
@@ -194,7 +204,9 @@ class CategoryMealsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${mealsCategories.firstWhere((mc) => mc.id == mealsCategory).name} Meals',
+          mealsCategoryId != null
+              ? '${mealsCategories.firstWhere((mc) => mc.id == mealsCategoryId).name} Meals'
+              : 'Favorite Meals',
         ),
       ),
       body: bodyContent,
