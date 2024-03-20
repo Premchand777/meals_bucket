@@ -12,10 +12,13 @@ class MealsCategoriesScreen extends StatelessWidget {
     super.key,
     required this.favoriteMeals,
     required this.addRemoveFavorites,
+    required this.currentTabIndex,
   });
 
   final List<MealModel> favoriteMeals;
-  final void Function(MealModel mealDetails) addRemoveFavorites;
+  final void Function(MealModel mealDetails, int markedAsFavorite)
+      addRemoveFavorites;
+  final int currentTabIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,7 @@ class MealsCategoriesScreen extends StatelessWidget {
                             mealsCategoryId: mealCategory.id,
                             favoriteMeals: favoriteMeals,
                             addRemoveFavorites: addRemoveFavorites,
+                            currentTabIndex: currentTabIndex,
                           ),
                         ),
                       );
