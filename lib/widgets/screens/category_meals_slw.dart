@@ -15,13 +15,15 @@ class CategoryMealsScreen extends StatelessWidget {
     this.mealsCategoryId,
     required this.favoriteMeals,
     required this.addRemoveFavorites,
+    required this.currentTabIndex,
   });
 
   // final MealsCategoryModel mealsCategory;
   final String? mealsCategoryId;
   final List<MealModel> categoryMeals = [];
   List<MealModel> favoriteMeals;
-  void Function(MealModel mealDetails) addRemoveFavorites;
+  void Function(MealModel mealDetails, int markedAsFavorite) addRemoveFavorites;
+  final int currentTabIndex;
 
   void getCategoryMeals() {
     if (mealsCategoryId != null) {
@@ -78,6 +80,7 @@ class CategoryMealsScreen extends StatelessWidget {
                                   mealDetails: categoryMeals[index],
                                   favoriteMeals: favoriteMeals,
                                   addRemoveFavorites: addRemoveFavorites,
+                                  currentTabIndex: currentTabIndex,
                                 ),
                               ),
                             );
