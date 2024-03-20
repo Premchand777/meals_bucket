@@ -80,17 +80,17 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
             }
           });
         }).toList();
-        setState(() {
-          currentAppBar = appBar;
-          currentScreenIndex = 0;
-          currentScreen = MealsCategoriesScreen(
-            favoriteMeals: favoriteMealCategories,
-            addRemoveFavorites: _addRemoveFavorites,
-            currentTabIndex: currentScreenIndex,
-            filteredMeals: filteredMeals,
-          );
-        });
       }
+      setState(() {
+        currentAppBar = appBar;
+        currentScreenIndex = 0;
+        currentScreen = MealsCategoriesScreen(
+          favoriteMeals: favoriteMealCategories,
+          addRemoveFavorites: _addRemoveFavorites,
+          currentTabIndex: currentScreenIndex,
+          filteredMeals: filteredMeals,
+        );
+      });
     }
   }
 
