@@ -27,6 +27,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
   Widget? currentScreen;
   List<MealModel> favoriteMealCategories = [];
   AppBar? currentAppBar = appBar;
+  List<MealModel> filteredMeals = [];
 
   void _setCurrentScreen(int index) async {
     if (index == 1) {
@@ -37,7 +38,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
           favoriteMeals: favoriteMealCategories,
           addRemoveFavorites: _addRemoveFavorites,
           currentTabIndex: currentScreenIndex,
-          filteredMeals: const [],
+          filteredMeals: filteredMeals,
         );
       });
     }
@@ -49,7 +50,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
           favoriteMeals: favoriteMealCategories,
           addRemoveFavorites: _addRemoveFavorites,
           currentTabIndex: currentScreenIndex,
-          filteredMeals: const [],
+          filteredMeals: filteredMeals,
         );
       });
     }
@@ -62,7 +63,6 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
           return const FiltersScreenSFW();
         }),
       );
-      List<MealModel> filteredMeals = [];
       if (mealsFilters != null) {
         filteredMeals = meals.where((meal) {
           return mealsFilters.entries.every((entry) {
