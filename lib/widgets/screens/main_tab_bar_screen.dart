@@ -3,6 +3,12 @@ import 'package:meals_bucket/models/meal_model.dart';
 import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
 import 'package:meals_bucket/widgets/screens/meals_categories_slw.dart';
 
+AppBar appBar = AppBar(
+  title: const Text(
+    'Meals Categories',
+  ),
+);
+
 class MainTabBarScreen extends StatefulWidget {
   const MainTabBarScreen({
     super.key,
@@ -16,11 +22,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
   int currentScreenIndex = 0;
   Widget? currentScreen;
   List<MealModel> favoriteMealCategories = [];
-  AppBar? currentAppBar = AppBar(
-    title: const Text(
-      'Meals Categories',
-    ),
-  );
+  AppBar? currentAppBar = appBar;
 
   void _setCurrentScreen(int index) {
     if (index == 1) {
@@ -30,15 +32,18 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
         currentScreen = CategoryMealsScreen(
           favoriteMeals: favoriteMealCategories,
           addRemoveFavorites: _addRemoveFavorites,
+          currentTabIndex: currentScreenIndex,
         );
       });
     }
     if (index == 0) {
+      currentAppBar = appBar;
       setState(() {
         currentScreenIndex = 0;
         currentScreen = MealsCategoriesScreen(
           favoriteMeals: favoriteMealCategories,
           addRemoveFavorites: _addRemoveFavorites,
+          currentTabIndex: currentScreenIndex,
         );
       });
     }
@@ -48,26 +53,21 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(msg),duration: Durations.extralong2,
+        content: Text(msg),
+        duration: Durations.extralong2,
       ),
     );
   }
 
-  void _addRemoveFavorites(MealModel mealDetails) {
+  void _addRemoveFavorites(MealModel mealDetails, int currentTabIndex) {
     if (favoriteMealCategories.contains(mealDetails)) {
-      setState(() {
-        favoriteMealCategories.remove(mealDetails);
-        currentScreenIndex = 0;
-        currentScreen = CategoryMealsScreen(
-          favoriteMeals: favoriteMealCategories,
-          addRemoveFavorites: _addRemoveFavorites,
-        );
-      });
+      favoriteMealCategories.remove(mealDetails);
       _showToggleFavoriteSnackMsg('Meal removed from Favoriets.');
     } else {
       favoriteMealCategories.add(mealDetails);
       _showToggleFavoriteSnackMsg('Meal added to Favoriets.');
     }
+    _setCurrentScreen(currentTabIndex);
   }
 
   @override
@@ -78,6 +78,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
           MealsCategoriesScreen(
             favoriteMeals: favoriteMealCategories,
             addRemoveFavorites: _addRemoveFavorites,
+            currentTabIndex: currentScreenIndex,
           ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentScreenIndex,
