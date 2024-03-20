@@ -10,11 +10,13 @@ class MealDetailsScreen extends StatefulWidget {
     required this.mealDetails,
     required this.favoriteMeals,
     required this.addRemoveFavorites,
+    required this.currentTabIndex,
   });
 
   MealModel mealDetails;
   List<MealModel> favoriteMeals;
-  void Function(MealModel mealDetails) addRemoveFavorites;
+  void Function(MealModel mealDetails, int currentTabIndex) addRemoveFavorites;
+  final int currentTabIndex;
 
   @override
   State<MealDetailsScreen> createState() => _MealDetailsScreenState();
@@ -54,10 +56,13 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
     }
 
     void onTappingFavoriteIcon() {
-      widget.addRemoveFavorites(widget.mealDetails);
       setState(() {
         toggleFavoriteIcon();
       });
+      widget.addRemoveFavorites(
+        widget.mealDetails,
+        widget.currentTabIndex,
+      );
     }
 
     return Scaffold(
