@@ -1,13 +1,11 @@
-// ignore_for_file: avoid_print, must_be_immutable
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:meals_bucket/data/meals.dart';
 import 'package:meals_bucket/data/meals_categories.dart';
-// import 'package:meals_bucket/data/meals_categories.dart';
 import 'package:meals_bucket/models/meal_model.dart';
 import 'package:meals_bucket/widgets/screens/meal_details_sfw.dart';
-// import 'package:meals_bucket/models/meals_category_model.dart';
 
 class CategoryMealsScreen extends StatelessWidget {
   CategoryMealsScreen({
@@ -16,18 +14,27 @@ class CategoryMealsScreen extends StatelessWidget {
     required this.favoriteMeals,
     required this.addRemoveFavorites,
     required this.currentTabIndex,
+    required this.filteredMeals,
   });
 
   // final MealsCategoryModel mealsCategory;
   final String? mealsCategoryId;
   final List<MealModel> categoryMeals = [];
-  List<MealModel> favoriteMeals;
-  void Function(MealModel mealDetails, int markedAsFavorite) addRemoveFavorites;
+  final List<MealModel> favoriteMeals;
+  final void Function(
+    MealModel mealDetails,
+    int markedAsFavorite,
+  ) addRemoveFavorites;
   final int currentTabIndex;
+  final List<MealModel> filteredMeals;
 
   void getCategoryMeals() {
     if (mealsCategoryId != null) {
-      for (final meal in meals) {
+      List<MealModel> mealsCopy = meals.toList();
+      if (filteredMeals.isNotEmpty) {
+        mealsCopy = filteredMeals;
+      }
+      for (final meal in mealsCopy) {
         if (meal.categories.contains(mealsCategoryId)) {
           categoryMeals.add(meal);
         }
