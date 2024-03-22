@@ -29,15 +29,7 @@ class _FiltersScreenSFWState extends State<FiltersScreenSFW> {
         canPop: false,
         onPopInvoked: (didPop) {
           if (didPop) return;
-          final bool isFiltered = filters.values.firstWhere(
-            (filter) => filter,
-            orElse: () => false,
-          );
-          if (isFiltered) {
-            Navigator.of(context).pop(filters);
-          } else {
-            Navigator.of(context).pop();
-          }
+          Navigator.of(context).pop(filters);
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
