@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:meals_bucket/data/meals.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// import 'package:meals_bucket/data/meals.dart';
 import 'package:meals_bucket/models/meal_model.dart';
+import 'package:meals_bucket/providers/meals_provider.dart';
 import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
 import 'package:meals_bucket/widgets/screens/filters_screen_sfw.dart';
 import 'package:meals_bucket/widgets/screens/meals_categories_slw.dart';
@@ -13,16 +16,16 @@ AppBar appBar = AppBar(
   ),
 );
 
-class MainTabBarScreen extends StatefulWidget {
+class MainTabBarScreen extends ConsumerStatefulWidget {
   const MainTabBarScreen({
     super.key,
   });
 
   @override
-  State<MainTabBarScreen> createState() => _MainTabBarScreenState();
+  ConsumerState<MainTabBarScreen> createState() => _MainTabBarScreenState();
 }
 
-class _MainTabBarScreenState extends State<MainTabBarScreen> {
+class _MainTabBarScreenState extends ConsumerState<MainTabBarScreen> {
   int currentScreenIndex = 0;
   Widget? currentScreen;
   List<MealModel> favoriteMealCategories = [];
@@ -64,6 +67,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
         }),
       );
       if (mealsFilters != null) {
+        final meals = ref.read(mealsProvider);
         filteredMeals = meals.where((meal) {
           return mealsFilters.entries.every((entry) {
             switch (entry.key) {
