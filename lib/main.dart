@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +16,9 @@ ThemeData theme = ThemeData(
 
 void main() {
   runApp(
-    const App(),
+    const ProviderScope(
+      child: App(),
+    ),
   );
 }
 
