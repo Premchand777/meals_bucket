@@ -60,7 +60,7 @@ class _MealDetailsScreenState extends ConsumerState<MealDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (ref.watch(favoriteMealsProvider).contains(widget.mealDetails)) {
+    if (ref.read(favoriteMealsProvider).contains(widget.mealDetails)) {
       icon = const Icon(
         Icons.star_rate_rounded,
       );
