@@ -1,53 +1,42 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:meals_bucket/data/meals.dart';
 import 'package:meals_bucket/data/meals_categories.dart';
 import 'package:meals_bucket/models/meal_model.dart';
 import 'package:meals_bucket/widgets/screens/meal_details_sfw.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
-  CategoryMealsScreen({
+import 'package:meals_bucket/providers/meals_provider.dart';
+
+class CategoryMealsScreen extends ConsumerWidget {
+  const CategoryMealsScreen({
     super.key,
     this.mealsCategoryId,
-    required this.favoriteMeals,
-    required this.addRemoveFavorites,
-    required this.currentTabIndex,
     required this.filteredMeals,
   });
 
-  // final MealsCategoryModel mealsCategory;
   final String? mealsCategoryId;
-  final List<MealModel> categoryMeals = [];
-  final List<MealModel> favoriteMeals;
-  final void Function(
-    MealModel mealDetails,
-    int markedAsFavorite,
-  ) addRemoveFavorites;
-  final int currentTabIndex;
   final List<MealModel> filteredMeals;
 
-  void getCategoryMeals() {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<MealModel> categoryMeals = [];
     if (mealsCategoryId != null) {
-      List<MealModel> mealsCopy = meals.toList();
-      if (filteredMeals.isNotEmpty) {
-        mealsCopy = filteredMeals;
-      }
+      List<MealModel> mealsCopy =
+          filteredMeals.isNotEmpty ? filteredMeals : ref.read(mealsProvider);
       for (final meal in mealsCopy) {
         if (meal.categories.contains(mealsCategoryId)) {
           categoryMeals.add(meal);
         }
       }
     } else {
-      categoryMeals.addAll(favoriteMeals);
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
+      categoryMeals = favoriteMeals;
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    getCategoryMeals();
     final Widget bodyContent;
+
     if (categoryMeals.isNotEmpty) {
       bodyContent = ListView.builder(
         itemCount: categoryMeals.length,
@@ -85,9 +74,6 @@ class CategoryMealsScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (ctx) => MealDetailsScreen(
                                   mealDetails: categoryMeals[index],
-                                  favoriteMeals: favoriteMeals,
-                                  addRemoveFavorites: addRemoveFavorites,
-                                  currentTabIndex: currentTabIndex,
                                 ),
                               ),
                             );
