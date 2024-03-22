@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// import 'package:meals_bucket/data/meals.dart';
 import 'package:meals_bucket/models/meal_model.dart';
-import 'package:meals_bucket/providers/meals_provider.dart';
 import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
 import 'package:meals_bucket/widgets/screens/filters_screen_sfw.dart';
 import 'package:meals_bucket/widgets/screens/meals_categories_slw.dart';
 import 'package:meals_bucket/widgets/widgets/main_drawer_slw.dart';
+
+import 'package:meals_bucket/providers/meals_provider.dart';
 
 AppBar appBar = AppBar(
   title: const Text(
@@ -28,7 +28,6 @@ class MainTabBarScreen extends ConsumerStatefulWidget {
 class _MainTabBarScreenState extends ConsumerState<MainTabBarScreen> {
   int currentScreenIndex = 0;
   Widget? currentScreen;
-  List<MealModel> favoriteMealCategories = [];
   AppBar? currentAppBar = appBar;
   List<MealModel> filteredMeals = [];
 
@@ -38,21 +37,16 @@ class _MainTabBarScreenState extends ConsumerState<MainTabBarScreen> {
       setState(() {
         currentScreenIndex = 1;
         currentScreen = CategoryMealsScreen(
-          favoriteMeals: favoriteMealCategories,
-          addRemoveFavorites: _addRemoveFavorites,
-          currentTabIndex: currentScreenIndex,
           filteredMeals: filteredMeals,
         );
       });
     }
+
     if (index == 0) {
       currentAppBar = appBar;
       setState(() {
         currentScreenIndex = 0;
         currentScreen = MealsCategoriesScreen(
-          favoriteMeals: favoriteMealCategories,
-          addRemoveFavorites: _addRemoveFavorites,
-          currentTabIndex: currentScreenIndex,
           filteredMeals: filteredMeals,
         );
       });
@@ -89,34 +83,10 @@ class _MainTabBarScreenState extends ConsumerState<MainTabBarScreen> {
         currentAppBar = appBar;
         currentScreenIndex = 0;
         currentScreen = MealsCategoriesScreen(
-          favoriteMeals: favoriteMealCategories,
-          addRemoveFavorites: _addRemoveFavorites,
-          currentTabIndex: currentScreenIndex,
           filteredMeals: filteredMeals,
         );
       });
     }
-  }
-
-  void _showToggleFavoriteSnackMsg(String msg) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        duration: Durations.extralong2,
-      ),
-    );
-  }
-
-  void _addRemoveFavorites(MealModel mealDetails, int currentTabIndex) {
-    if (favoriteMealCategories.contains(mealDetails)) {
-      favoriteMealCategories.remove(mealDetails);
-      _showToggleFavoriteSnackMsg('Meal removed from Favoriets.');
-    } else {
-      favoriteMealCategories.add(mealDetails);
-      _showToggleFavoriteSnackMsg('Meal added to Favoriets.');
-    }
-    _setCurrentScreen(currentTabIndex);
   }
 
   @override
@@ -127,11 +97,8 @@ class _MainTabBarScreenState extends ConsumerState<MainTabBarScreen> {
         onSelectMenuItem: _setCurrentScreen,
       ),
       body: currentScreen ??
-          MealsCategoriesScreen(
-            favoriteMeals: favoriteMealCategories,
-            addRemoveFavorites: _addRemoveFavorites,
-            currentTabIndex: currentScreenIndex,
-            filteredMeals: const [],
+          const MealsCategoriesScreen(
+            filteredMeals: [],
           ),
       bottomNavigationBar: currentScreenIndex != 2
           ? BottomNavigationBar(

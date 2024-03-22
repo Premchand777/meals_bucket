@@ -10,16 +10,9 @@ import 'package:meals_bucket/widgets/widgets/meals_category_item_slw.dart';
 class MealsCategoriesScreen extends StatelessWidget {
   const MealsCategoriesScreen({
     super.key,
-    required this.favoriteMeals,
-    required this.addRemoveFavorites,
-    required this.currentTabIndex,
     required this.filteredMeals,
   });
 
-  final List<MealModel> favoriteMeals;
-  final void Function(MealModel mealDetails, int markedAsFavorite)
-      addRemoveFavorites;
-  final int currentTabIndex;
   final List<MealModel> filteredMeals;
 
   @override
@@ -48,9 +41,6 @@ class MealsCategoriesScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (ctx) => CategoryMealsScreen(
                             mealsCategoryId: mealCategory.id,
-                            favoriteMeals: favoriteMeals,
-                            addRemoveFavorites: addRemoveFavorites,
-                            currentTabIndex: currentTabIndex,
                             filteredMeals: filteredMeals,
                           ),
                         ),

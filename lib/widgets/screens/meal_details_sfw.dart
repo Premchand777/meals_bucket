@@ -1,67 +1,68 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_bucket/models/meal_model.dart';
+import 'package:meals_bucket/providers/meals_provider.dart';
 
-class MealDetailsScreen extends StatefulWidget {
+class MealDetailsScreen extends ConsumerStatefulWidget {
   MealDetailsScreen({
     super.key,
     required this.mealDetails,
-    required this.favoriteMeals,
-    required this.addRemoveFavorites,
-    required this.currentTabIndex,
   });
 
   MealModel mealDetails;
-  List<MealModel> favoriteMeals;
-  void Function(MealModel mealDetails, int currentTabIndex) addRemoveFavorites;
-  final int currentTabIndex;
 
   @override
-  State<MealDetailsScreen> createState() => _MealDetailsScreenState();
+  ConsumerState<MealDetailsScreen> createState() => _MealDetailsScreenState();
 }
 
-class _MealDetailsScreenState extends State<MealDetailsScreen> {
-  int iconIndex = 0;
+class _MealDetailsScreenState extends ConsumerState<MealDetailsScreen> {
   Icon icon = const Icon(
     Icons.star_border_rounded,
   );
-  @override
-  Widget build(BuildContext context) {
-    if (widget.favoriteMeals.contains(widget.mealDetails)) {
-      iconIndex = 1;
-      icon = const Icon(
-        Icons.star_rate_rounded,
-      );
-    }
-    void toggleFavoriteIcon() {
-      if (iconIndex == 0) {
-        // setState(() {
-        iconIndex = 1;
+
+  void toggleFavoriteIcon(bool isFavorite) {
+    if (isFavorite) {
+      setState(() {
         icon = const Icon(
           Icons.star_rate_rounded,
         );
-        // });
-        return;
-      }
-      if (iconIndex == 1) {
-        // setState(() {
-        iconIndex = 0;
-        icon = const Icon(
-          Icons.star_border_rounded,
-        );
-        // });
-      }
-    }
-
-    void onTappingFavoriteIcon() {
-      setState(() {
-        toggleFavoriteIcon();
       });
-      widget.addRemoveFavorites(
-        widget.mealDetails,
-        widget.currentTabIndex,
+      _showToggleFavoriteSnackMsg('Marked as favorite.');
+      return;
+    }
+    setState(() {
+      icon = const Icon(
+        Icons.star_border_rounded,
+      );
+    });
+    _showToggleFavoriteSnackMsg('Removed from favorites.');
+  }
+
+  void onTappingFavoriteIcon() {
+    final wasAdded = ref
+        .read(favoriteMealsProvider.notifier)
+        .addOrRemoveFavorites(widget.mealDetails);
+    toggleFavoriteIcon(wasAdded);
+  }
+
+  void _showToggleFavoriteSnackMsg(String msg) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        duration: Durations.extralong2,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (ref.watch(favoriteMealsProvider).contains(widget.mealDetails)) {
+      icon = const Icon(
+        Icons.star_rate_rounded,
       );
     }
 
