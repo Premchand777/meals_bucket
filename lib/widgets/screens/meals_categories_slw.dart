@@ -1,22 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_bucket/data/meals_categories.dart';
-import 'package:meals_bucket/models/meal_model.dart';
+import 'package:meals_bucket/providers/meals_provider.dart';
 import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
 import 'package:meals_bucket/widgets/widgets/meals_category_item_slw.dart';
 
-class MealsCategoriesScreen extends StatelessWidget {
+class MealsCategoriesScreen extends ConsumerWidget {
   const MealsCategoriesScreen({
     super.key,
-    required this.filteredMeals,
   });
 
-  final List<MealModel> filteredMeals;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filteredMeals = ref.watch(filteredMealsProvider);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
