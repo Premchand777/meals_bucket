@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
-import 'package:meals_bucket/widgets/screens/filters_screen_sfw.dart';
-import 'package:meals_bucket/widgets/screens/meals_categories_slw.dart';
+import 'package:meals_bucket/widgets/screens/category_meals_cw.dart';
+import 'package:meals_bucket/widgets/screens/filters_cw.dart';
+import 'package:meals_bucket/widgets/screens/meals_categories_cw.dart';
 import 'package:meals_bucket/widgets/widgets/main_drawer_slw.dart';
 
 AppBar appBar = AppBar(
@@ -11,16 +11,16 @@ AppBar appBar = AppBar(
   ),
 );
 
-class MainTabBarScreen extends StatefulWidget {
-  const MainTabBarScreen({
+class MainTabBarScreenSFW extends StatefulWidget {
+  const MainTabBarScreenSFW({
     super.key,
   });
 
   @override
-  State<MainTabBarScreen> createState() => _MainTabBarScreenState();
+  State<MainTabBarScreenSFW> createState() => _MainTabBarScreenState();
 }
 
-class _MainTabBarScreenState extends State<MainTabBarScreen> {
+class _MainTabBarScreenState extends State<MainTabBarScreenSFW> {
   int currentScreenIndex = 0;
   Widget? currentScreen;
   AppBar? currentAppBar = appBar;
@@ -30,7 +30,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
       currentAppBar = null;
       setState(() {
         currentScreenIndex = 1;
-        currentScreen = const CategoryMealsScreen(
+        currentScreen = const CategoryMealsScreenCW(
           filteredMeals: [],
         );
       });
@@ -40,7 +40,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
       currentAppBar = appBar;
       setState(() {
         currentScreenIndex = 0;
-        currentScreen = const MealsCategoriesScreen();
+        currentScreen = const MealsCategoriesScreenCW();
       });
     }
 
@@ -49,7 +49,7 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
       currentScreenIndex = 2;
       Navigator.of(context).push(
         MaterialPageRoute(builder: (ctx) {
-          return const FiltersScreenSFW();
+          return const FiltersScreenCW();
         }),
       );
     }
@@ -59,11 +59,10 @@ class _MainTabBarScreenState extends State<MainTabBarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: currentAppBar,
-      drawer: MainDrawer(
+      drawer: MainDrawerSLW(
         onSelectMenuItem: _setCurrentScreen,
       ),
-      body: currentScreen ??
-          const MealsCategoriesScreen(),
+      body: currentScreen ?? const MealsCategoriesScreenCW(),
       bottomNavigationBar: currentScreenIndex != 2
           ? BottomNavigationBar(
               currentIndex: currentScreenIndex,

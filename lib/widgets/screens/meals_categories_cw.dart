@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_bucket/data/meals_categories.dart';
-import 'package:meals_bucket/providers/meals_provider.dart';
-import 'package:meals_bucket/widgets/screens/category_meals_slw.dart';
+import 'package:meals_bucket/providers/meals_providers.dart';
+import 'package:meals_bucket/widgets/screens/category_meals_cw.dart';
 import 'package:meals_bucket/widgets/widgets/meals_category_item_slw.dart';
 
-class MealsCategoriesScreen extends ConsumerWidget {
-  const MealsCategoriesScreen({
+class MealsCategoriesScreenCW extends ConsumerWidget {
+  const MealsCategoriesScreenCW({
     super.key,
   });
 
@@ -38,7 +38,7 @@ class MealsCategoriesScreen extends ConsumerWidget {
                     () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => CategoryMealsScreen(
+                          builder: (ctx) => CategoryMealsScreenCW(
                             mealsCategoryId: mealCategory.id,
                             filteredMeals: filteredMeals,
                           ),

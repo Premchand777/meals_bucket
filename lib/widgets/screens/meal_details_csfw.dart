@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_bucket/models/meal_model.dart';
-import 'package:meals_bucket/providers/meals_provider.dart';
+import 'package:meals_bucket/providers/meals_providers.dart';
 
-class MealDetailsScreen extends ConsumerStatefulWidget {
-  MealDetailsScreen({
+class MealDetailsScreenCSFW extends ConsumerStatefulWidget {
+  MealDetailsScreenCSFW({
     super.key,
     required this.mealDetails,
   });
@@ -15,10 +15,11 @@ class MealDetailsScreen extends ConsumerStatefulWidget {
   MealModel mealDetails;
 
   @override
-  ConsumerState<MealDetailsScreen> createState() => _MealDetailsScreenState();
+  ConsumerState<MealDetailsScreenCSFW> createState() =>
+      _MealDetailsScreenState();
 }
 
-class _MealDetailsScreenState extends ConsumerState<MealDetailsScreen> {
+class _MealDetailsScreenState extends ConsumerState<MealDetailsScreenCSFW> {
   Icon icon = const Icon(
     Icons.star_border_rounded,
   );

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:meals_bucket/providers/meals_provider.dart';
+import 'package:meals_bucket/providers/meals_providers.dart';
 
-class FiltersScreenSFW extends ConsumerWidget {
-  const FiltersScreenSFW({
+class FiltersScreenCW extends ConsumerWidget {
+  const FiltersScreenCW({
     super.key,
   });
 

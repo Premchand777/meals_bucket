@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MainDrawer extends StatelessWidget {
-  const MainDrawer({
+class MainDrawerSLW extends StatelessWidget {
+  const MainDrawerSLW({
     super.key,
     required this.onSelectMenuItem,
   });

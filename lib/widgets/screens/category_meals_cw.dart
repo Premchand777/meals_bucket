@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_bucket/data/meals_categories.dart';
 import 'package:meals_bucket/models/meal_model.dart';
-import 'package:meals_bucket/widgets/screens/meal_details_sfw.dart';
+import 'package:meals_bucket/widgets/screens/meal_details_csfw.dart';
 
-import 'package:meals_bucket/providers/meals_provider.dart';
+import 'package:meals_bucket/providers/meals_providers.dart';
 
-class CategoryMealsScreen extends ConsumerWidget {
-  const CategoryMealsScreen({
+class CategoryMealsScreenCW extends ConsumerWidget {
+  const CategoryMealsScreenCW({
     super.key,
     this.mealsCategoryId,
     required this.filteredMeals,
@@ -72,7 +72,7 @@ class CategoryMealsScreen extends ConsumerWidget {
                           () {
                             Navigator.of(ctx).push(
                               MaterialPageRoute(
-                                builder: (ctx) => MealDetailsScreen(
+                                builder: (ctx) => MealDetailsScreenCSFW(
                                   mealDetails: categoryMeals[index],
                                 ),
                               ),
