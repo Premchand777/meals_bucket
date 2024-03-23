@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_bucket/models/meal_model.dart';
 import 'package:meals_bucket/providers/meals_providers.dart';
 
-class MealDetailsScreenCSFW extends ConsumerStatefulWidget {
-  MealDetailsScreenCSFW({
+class MealDetailsScreenCW extends ConsumerWidget {
+  MealDetailsScreenCW({
     super.key,
     required this.mealDetails,
   });
@@ -15,66 +15,44 @@ class MealDetailsScreenCSFW extends ConsumerStatefulWidget {
   MealModel mealDetails;
 
   @override
-  ConsumerState<MealDetailsScreenCSFW> createState() =>
-      _MealDetailsScreenState();
-}
-
-class _MealDetailsScreenState extends ConsumerState<MealDetailsScreenCSFW> {
-  Icon icon = const Icon(
-    Icons.star_border_rounded,
-  );
-
-  void toggleFavoriteIcon(bool isFavorite) {
-    if (isFavorite) {
-      setState(() {
-        icon = const Icon(
-          Icons.star_rate_rounded,
-        );
-      });
-      _showToggleFavoriteSnackMsg('Marked as favorite.');
-      return;
-    }
-    setState(() {
-      icon = const Icon(
-        Icons.star_border_rounded,
-      );
-    });
-    _showToggleFavoriteSnackMsg('Removed from favorites.');
-  }
-
-  void onTappingFavoriteIcon() {
-    final wasAdded = ref
-        .read(favoriteMealsProvider.notifier)
-        .addOrRemoveFavorites(widget.mealDetails);
-    toggleFavoriteIcon(wasAdded);
-  }
-
-  void _showToggleFavoriteSnackMsg(String msg) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        duration: Durations.extralong2,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (ref.read(favoriteMealsProvider).contains(widget.mealDetails)) {
-      icon = const Icon(
-        Icons.star_rate_rounded,
+  Widget build(BuildContext context, WidgetRef ref) {
+    void showToggleFavoriteSnackMsg(String msg) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(msg),
+          duration: Durations.extralong2,
+        ),
       );
     }
+
+    void toggleFavoriteIcon(bool isFavorite) {
+      if (isFavorite) {
+        showToggleFavoriteSnackMsg('Marked as favorite.');
+        return;
+      }
+      showToggleFavoriteSnackMsg('Removed from favorites.');
+    }
+
+    void onTappingFavoriteIcon() {
+      final wasAdded = ref
+          .read(favoriteMealsProvider.notifier)
+          .addOrRemoveFavorites(mealDetails);
+      toggleFavoriteIcon(wasAdded);
+    }
+
+    final isFavorited = ref.watch(favoriteMealsProvider).contains(mealDetails);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.mealDetails.title,
+          mealDetails.title,
         ),
         actions: [
           IconButton(
-            icon: icon,
+            icon: Icon(
+              isFavorited ? Icons.star_rate_rounded : Icons.star_border_rounded,
+            ),
             onPressed: onTappingFavoriteIcon,
             style: const ButtonStyle(
               iconSize: MaterialStatePropertyAll(30),
@@ -92,7 +70,7 @@ class _MealDetailsScreenState extends ConsumerState<MealDetailsScreenCSFW> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                      widget.mealDetails.imageUrl,
+                      mealDetails.imageUrl,
                     ),
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
@@ -114,7 +92,7 @@ class _MealDetailsScreenState extends ConsumerState<MealDetailsScreenCSFW> {
               const SizedBox(
                 height: 12,
               ),
-              for (final ingredient in widget.mealDetails.ingredients)
+              for (final ingredient in mealDetails.ingredients)
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 8,
@@ -140,7 +118,7 @@ class _MealDetailsScreenState extends ConsumerState<MealDetailsScreenCSFW> {
               const SizedBox(
                 height: 12,
               ),
-              for (final step in widget.mealDetails.steps)
+              for (final step in mealDetails.steps)
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 12,
