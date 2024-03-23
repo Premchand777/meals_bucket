@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals_bucket/data/meals_categories.dart';
 import 'package:meals_bucket/models/meal_model.dart';
-import 'package:meals_bucket/widgets/screens/meal_details_csfw.dart';
+import 'package:meals_bucket/widgets/screens/meal_details_cw.dart';
 
 import 'package:meals_bucket/providers/meals_providers.dart';
 
@@ -72,7 +72,7 @@ class CategoryMealsScreenCW extends ConsumerWidget {
                           () {
                             Navigator.of(ctx).push(
                               MaterialPageRoute(
-                                builder: (ctx) => MealDetailsScreenCSFW(
+                                builder: (ctx) => MealDetailsScreenCW(
                                   mealDetails: categoryMeals[index],
                                 ),
                               ),
