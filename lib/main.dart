@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:meals_bucket/widgets/screens/main_tab_bar_screen.dart';
+import 'package:meals_bucket/widgets/screens/main_tabs_bar_sfw.dart';
 
 ThemeData theme = ThemeData(
   useMaterial3: true,
@@ -30,7 +30,7 @@ class App extends StatelessWidget {
     return SafeArea(
       child: MaterialApp(
         theme: theme,
-        home: const MainTabBarScreen(),
+        home: const MainTabBarScreenSFW(),
         debugShowCheckedModeBanner: false,
       ),
     );
